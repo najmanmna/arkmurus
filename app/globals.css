@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ARKMURUS DESIGN SYSTEM (Tailwind v4) 
+  Based on brief: Dark navy/charcoal backgrounds, serif headings, sans-serif body.
+*/
+@theme {
+  /* Colors from Brief [cite: 11] */
+  --color-ark-bg: #0a0f1a;       /* Dark Navy/Charcoal */
+  --color-ark-gold: #c5a059;     /* Subtle Gold Accent */
+  --color-ark-blue: #4a6fa5;     /* Steel Blue Accent */
+  
+  /* Map Next.js font variables to Tailwind utilities */
+  --font-sans: var(--font-inter); 
+  --font-serif: var(--font-playfair);
+  
+  /* Custom Animations for that "Ghost" feel */
+  --animate-fade-in: fadeIn 1s ease-out forwards;
+  --animate-float: float 6s ease-in-out infinite;
+
+  
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/[0.03] border border-white/10 backdrop-blur-md shadow-2xl;
   }
 }
 
+/* Global Resets & Luxury Feel 
+*/
+:root {
+  background-color: var(--color-ark-bg);
+  color: #ffffff;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Smooths out fonts for that 'magazine' look */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Vital for full-width animations */
+}
+
+/* Hide Scrollbar (Brief: "Exclusive, discreet" feel) */
+body::-webkit-scrollbar {
+  display: none;
+}
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
