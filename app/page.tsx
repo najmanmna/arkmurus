@@ -5,10 +5,12 @@ import ServiceLayout from "@/components/ServiceLayout";
 import Leadership from "@/components/Leadership";
 import GeographicReach from "@/components/GeographicReach";
 import ContactFooter from "@/components/ContactFooter";
+import Loader from "@/components/Loader";
 
 export default function Home() {
   return (
     <main className="relative w-full min-h-screen text-white">
+      <Loader /> {/* THE LOADER OVERLAY */}
       {/* THE CINEMATIC ENGINE */}
       <CinematicBackground />
 
