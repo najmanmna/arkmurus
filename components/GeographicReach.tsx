@@ -110,7 +110,7 @@ export default function GeographicReach() {
   const [activeRegion, setActiveRegion] = useState(theatres[0]); 
 
   return (
-    <section id="geographic-reach" className="relative py-32 border-t border-white/5 bg-[#080808] overflow-hidden">
+    <section id="geographic-reach" className="relative py-32 border-t border-white/5  overflow-hidden">
       
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
         
