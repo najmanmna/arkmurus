@@ -18,12 +18,12 @@ const itemVariants: Variants = {
   hidden: { 
     y: 30, 
     opacity: 0, 
-    filter: 'blur(10px)' 
+    // filter: 'blur(10px)' <-- REMOVED FOR PERFORMANCE
   }, 
   visible: { 
     y: 0, 
     opacity: 1, 
-    filter: 'blur(0px)', 
+    // filter: 'blur(0px)', <-- REMOVED FOR PERFORMANCE
     transition: { 
       duration: 1.2, 
       // FIX: Add 'as const' so TS knows this is a Bezier curve tuple, not a number[]
