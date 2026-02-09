@@ -1,26 +1,34 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 // Animation Variants for the "Staggered Reveal"
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
       staggerChildren: 0.3, // 0.3s delay between each item
-      delayChildren: 0.5,   // Wait 0.5s before starting (let the city load first)
+      delayChildren: 0.5,   // Wait 0.5s before starting
     },
   },
 };
 
-const itemVariants = {
-  hidden: { y: 30, opacity: 0, filter: 'blur(10px)' }, // Start lower and blurry
+const itemVariants: Variants = {
+  hidden: { 
+    y: 30, 
+    opacity: 0, 
+    filter: 'blur(10px)' 
+  }, 
   visible: { 
     y: 0, 
     opacity: 1, 
-    filter: 'blur(0px)', // Focus in
-    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } // "Cinematic" easing curve
+    filter: 'blur(0px)', 
+    transition: { 
+      duration: 1.2, 
+      // FIX: Add 'as const' so TS knows this is a Bezier curve tuple, not a number[]
+      ease: [0.16, 1, 0.3, 1] as const 
+    } 
   },
 };
 
@@ -56,23 +64,23 @@ export default function HeroSection() {
           the world’s most demanding markets.
         </motion.p>
 
-        {/* 3. THE "GOLD" ACCENT LINE (Subtle branding) */}
+        {/* 3. THE "GOLD" ACCENT LINE */}
         <motion.div 
           variants={itemVariants}
-          className="w-24 h-[1px] bg-ark-gold mx-auto opacity-70"
+          className="w-24 h-[1px] bg-[#cc9966] mx-auto opacity-70"
         />
 
       </motion.div>
 
-      {/* 4. SCROLL INDICATOR (Pinned to bottom) */}
+      {/* 4. SCROLL INDICATOR */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }} // Fades in last
+        transition={{ delay: 2.5, duration: 1 }} 
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500">Scroll</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-ark-gold/0 via-ark-gold to-ark-gold/0 animate-pulse" />
+        <div className="w-[1px] h-12 bg-gradient-to-b from-[#cc9966]/0 via-[#cc9966] to-[#cc9966]/0 animate-pulse" />
       </motion.div>
     </section>
   );
