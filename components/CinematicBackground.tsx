@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useScroll } from 'framer-motion';
 import { Cloud, Stars, Environment, Float, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
@@ -13,17 +13,15 @@ function useSkylineTexture(city: 'london' | 'dc' | 'dubai') {
   return useMemo(() => {
     if (typeof document === 'undefined') return null;
     const canvas = document.createElement('canvas');
-    // Reduced resolution slightly (2048 -> 1024) for performance. 
-    // In fog, you can't tell the difference.
     canvas.width = 1024; 
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
-    ctx.scale(0.5, 0.5); // Adjust scale for the lower res canvas
+    ctx.scale(0.5, 0.5); 
     ctx.clearRect(0, 0, 2048, 1024);
     
-    ctx.shadowBlur = 0; // Removing shadowBlur saves massive CPU time during generation
+    ctx.shadowBlur = 0; 
     ctx.fillStyle = "#ffffff";
 
     if (city === 'london') {
@@ -84,17 +82,14 @@ function Scene({ dpr }: { dpr: number }) {
     const scroll = scrollYProgress.get();
     const targetZ = -scroll * 1000;
     
-    // Only update camera if moving (Minor optimization)
     if (Math.abs(camera.position.z - targetZ) > 0.1) {
         camera.position.z += (targetZ - camera.position.z) * 0.03;
     }
     
-    // Breathing motion
     const time = Date.now() * 0.0001;
     camera.position.x = Math.sin(time) * 1;
     camera.position.y = Math.sin(time * 2) * 0.5;
     
-    // Fog Logic
     const z = Math.abs(camera.position.z);
     let fogColor = new Color("#000000");
     if (z < 300) fogColor.lerp(new Color("#0a1016"), 0.5); 
@@ -107,49 +102,45 @@ function Scene({ dpr }: { dpr: number }) {
 
   return (
     <>
-      {/* Reduced Star Count (5000 -> 1500) */}
       <Stars radius={300} depth={50} count={1500} factor={4} saturation={0} fade speed={0.2} />
       <Environment preset="night" />
 
       {/* LONDON */}
       <CityBillboard type="london" z={-150} scale={[250, 125, 1]} color="#8899aa" />
-      {/* Reduced Cloud Opacity segments for performance */}
-      <Cloud position={[0, 0, -100]} opacity={0.15} speed={0.1} width={20} depth={1} segments={10} />
+      <Cloud position={[0, 0, -100]} opacity={0.15} speed={0.1} bounds={[20, 2, 1]} segments={10} />
 
       {/* DC */}
       <CityBillboard type="dc" z={-500} scale={[300, 150, 1]} color="#dddddd" />
-      <Cloud position={[0, 0, -450]} opacity={0.15} speed={0.1} width={20} depth={1} segments={10} />
+      <Cloud position={[0, 0, -450]} opacity={0.15} speed={0.1} bounds={[20, 2, 1]} segments={10} />
 
       {/* DUBAI */}
       <CityBillboard type="dubai" z={-900} scale={[250, 250, 1]} color="#cc9966" />
-      <Cloud position={[0, 0, -800]} opacity={0.15} speed={0.1} width={20} depth={1} segments={10} />
+      <Cloud position={[0, 0, -800]} opacity={0.15} speed={0.1} bounds={[20, 2, 1]} segments={10} />
     </>
   );
 }
 
 export default function CinematicBackground() {
-  const [dpr, setDpr] = useState(1); // Default to 1 (Fastest)
+  const [dpr, setDpr] = useState(1); 
 
   return (
     <div className="fixed inset-0 z-0 bg-ark-bg">
       <Canvas 
-        // 3. CAP PIXEL RATIO: Never go above 1.5, even on retina
         dpr={[1, 1.5]} 
         camera={{ position: [0, 0, 10], fov: 50 }}
         gl={{ 
-            antialias: false, // Post-processing handles smoothing, so native AA is waste
+            antialias: false, 
             powerPreference: "high-performance",
             stencil: false,
             depth: true 
         }}
       >
-        {/* Automatic Performance Tuner */}
         <PerformanceMonitor onIncline={() => setDpr(1.5)} onDecline={() => setDpr(1)} />
         
         <Scene dpr={dpr} />
         
-        <EffectComposer disableNormalPass multisampling={0}> 
-            {/* Multisampling={0} is the KEY to fixing lag */}
+        {/* FIXED: enableNormalPass={false} instead of disableNormalPass */}
+        <EffectComposer enableNormalPass={false} multisampling={0}> 
             <Bloom luminanceThreshold={0.2} mipmapBlur intensity={1.0} radius={0.5} levels={4} />
             <Noise opacity={0.1} />
             <Vignette eskil={false} offset={0.1} darkness={1.1} />
