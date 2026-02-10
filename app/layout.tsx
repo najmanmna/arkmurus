@@ -20,6 +20,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Arkmurus Group | Strategic Advisory",
   description: "Navigating the intersection of government, defence, and commerce.",
+  icons: {
+    icon: '/favicon.png', // <--- ADD THIS LINE
+  },
 };
 
 export default function RootLayout({
