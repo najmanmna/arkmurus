@@ -84,7 +84,7 @@ export default function Navbar() {
           
           {/* LIVE STATUS */}
           <div className="flex gap-6 border-r border-white/10 pr-8">
-            {['London', 'Washington', 'Dubai'].map((city) => (
+            {['London', 'Istanbul', 'Dubai'].map((city) => (
               <div key={city} className="group flex items-center gap-2 cursor-default">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500/50 opacity-75"></span>

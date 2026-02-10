@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Mail, Clock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-// Live Time Component for that "Global Ops" feel
+// Live Time Component
 const LocalTime = ({ offset, city }: { offset: number, city: string }) => {
   const [time, setTime] = useState('');
 
@@ -23,10 +23,20 @@ const LocalTime = ({ offset, city }: { offset: number, city: string }) => {
   return (
     <div className="flex items-center gap-2 text-[10px] font-mono text-[#cc9966]">
       <Clock size={10} />
-      <span>{time} {city.toUpperCase()}</span>
+      <span>{time}</span>
     </div>
   );
 };
+
+// Updated Office Data
+const offices = [
+  { city: "London", offset: 0, code: "LDN" },
+  { city: "Tallinn", offset: 2, code: "TLL" }, // UTC+2
+  { city: "Istanbul", offset: 3, code: "IST" }, // UTC+3
+  { city: "Geneva", offset: 1, code: "GVA" }, // UTC+1
+  { city: "Lima", offset: -5, code: "LIM" }, // UTC-5
+  { city: "Dubai", offset: 4, code: "DXB" }  // UTC+4
+];
 
 export default function ContactFooter() {
   return (
@@ -91,41 +101,38 @@ export default function ContactFooter() {
           </div>
 
           {/* --- RIGHT: THE NETWORK TERMINALS --- */}
-          <div className="space-y-6">
+          <div>
             <h3 className="text-xs font-mono text-white/30 uppercase tracking-[0.2em] mb-8 border-b border-white/5 pb-4">
                 Regional Operations
             </h3>
 
-            {[
-              { city: "London", email: "info.uk@arkmurus.com", offset: 0 },
-              { city: "Washington", email: "info.us@arkmurus.com", offset: -5 },
-              { city: "Dubai", email: "info.uae@arkmurus.com", offset: 4 }
-            ].map((office, idx) => (
-              <motion.div 
-                key={office.city}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + (idx * 0.1) }}
-                className="group relative p-6 border-l border-white/10 hover:border-[#cc9966] bg-gradient-to-r from-white/[0.01] to-transparent hover:from-white/[0.03] transition-all duration-500"
-              >
-                <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-xl font-serif text-white group-hover:text-[#cc9966] transition-colors">
-                        {office.city}
-                    </h4>
-                    {/* Live Time */}
-                    <LocalTime offset={office.offset} city={office.city.substring(0,3)} />
-                </div>
-                
-                <a href={`mailto:${office.email}`} className="text-sm font-mono text-white/40 hover:text-white transition-colors tracking-wide">
-                    {office.email}
-                </a>
-
-                {/* Decorative Status Light */}
-                <div className="absolute right-6 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#cc9966]/20 group-hover:bg-[#cc9966] transition-colors" />
-                
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {offices.map((office, idx) => (
+                    <motion.div 
+                        key={office.city}
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 + (idx * 0.05) }}
+                        className="group relative p-4 border border-white/5 hover:border-[#cc9966]/50 bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300"
+                    >
+                        <div className="flex justify-between items-center">
+                            <h4 className="text-lg font-serif text-white/80 group-hover:text-white transition-colors">
+                                {office.city}
+                            </h4>
+                            <span className="text-[10px] font-mono text-white/20 group-hover:text-[#cc9966] transition-colors">
+                                {office.code}
+                            </span>
+                        </div>
+                        
+                        <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-end">
+                             <LocalTime offset={office.offset} city={office.city} />
+                             {/* Status Light */}
+                             <div className="w-1.5 h-1.5 rounded-full bg-[#cc9966]/20 group-hover:bg-[#cc9966] transition-colors shadow-[0_0_5px_rgba(204,153,102,0.2)]" />
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
           </div>
 
         </div>
