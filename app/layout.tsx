@@ -23,6 +23,17 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png', // <--- ADD THIS LINE
   },
+  openGraph: {
+    title: "Arkmurus Group | Strategic Advisory",
+    description: "Navigating the intersection of government, defence, and commerce.",
+    images: [
+      {
+        url: "/favicon.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

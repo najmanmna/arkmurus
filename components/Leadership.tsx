@@ -89,6 +89,7 @@ export default function Leadership() {
           {leaders.map((leader, index) => (
             <motion.div
               key={leader.id}
+              data-nosnippet
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
